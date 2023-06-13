@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="ModbusTCPServer.DeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ModbusTCPServer"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <TabItem Header="Config">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="57*"/>
+                        <ColumnDefinition Width="737*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Device name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox HorizontalAlignment="Left" Height="26" Margin="67,10,0,0" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"
+                             Text="{Binding AssociatedDevice.DeviceName, UpdateSourceTrigger=PropertyChanged, FallbackValue=DeviceName}" Grid.Column="1"/>
+
+                    <Label Content="Device address" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox HorizontalAlignment="Left" Height="26" Margin="67,41,0,0" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"
+                             Text="{Binding AssociatedDevice.DeviceAddress, UpdateSourceTrigger=PropertyChanged, FallbackValue=DeviceAddress}" Grid.Column="1"/>
+
+                    <CheckBox Content="Create data on request" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"
+                              IsChecked="{Binding AssociatedDevice.CreateDataOnRequest, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Coils">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="True"
+                              ItemsSource="{Binding AssociatedDevice.CoilsListViewSource.View}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Address, Mode=TwoWay}" Header="Address" Width="150" SortDirection="Ascending"/>
+                            <DataGridCheckBoxColumn Binding="{Binding BitValue, Mode=TwoWay}" Header="Value" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="DiscreteInputs">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="True"
+                              ItemsSource="{Binding AssociatedDevice.DiscreteInputsListViewSource.View}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Address, Mode=TwoWay}" Header="Address" Width="150"/>
+                            <DataGridCheckBoxColumn Binding="{Binding BitValue, Mode=TwoWay}" Header="Value" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="InputRegisters">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="True"
+                              ItemsSource="{Binding AssociatedDevice.InputRegistersListViewSource.View}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Address, Mode=TwoWay}" Header="Address" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding RegisterValue, Mode=TwoWay}" Header="Value" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="HoldingRegisters">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="True"
+                              ItemsSource="{Binding AssociatedDevice.HoldingRegistersListViewSource.View}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Address, Mode=TwoWay}" Header="Address" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding RegisterValue, Mode=TwoWay}" Header="Value" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</UserControl>

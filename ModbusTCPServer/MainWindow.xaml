@@ -1,0 +1,75 @@
+﻿<Window x:Class="ModbusTCPServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModbusTCPServer"
+        xmlns:lib="clr-namespace:ModbusTotalKit;assembly=ModbusTotalKit"
+        mc:Ignorable="d"
+        Title="Modbus TCP Server" Height="600" MinHeight="600" Width="800" MinWidth="800"
+        Style="{StaticResource AppWindowStyle}" Closing="Window_Closing">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="30" Margin="5,-31,0,0" VerticalAlignment="Top" Width="30" Source="Images/Icon.ico"/>
+
+        <Menu Height="25" VerticalAlignment="Top" Background="#4D4D4D" Foreground="White">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+
+            <MenuItem Header="Server Data" HorizontalAlignment="Left" Click="MenuItemConfig_Click">
+            </MenuItem>
+
+            <MenuItem Header="Program info" HorizontalAlignment="Right" Click="MenuItemInfo_Click">
+            </MenuItem>
+        </Menu>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="121" Margin="10,30,0,0" VerticalAlignment="Top" Width="217">
+            <Grid>
+                <Label Content="Server status" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="80"/>
+                <TextBox HorizontalAlignment="Left" Height="26" Margin="95,10,0,0" VerticalAlignment="Top" Width="110" VerticalContentAlignment="Center" 
+                         Text="{Binding Server.ModbusServerState, UpdateSourceTrigger=PropertyChanged, FallbackValue=ServerStatus}"/>
+                <Label Content="Server port" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="80"/>
+                <TextBox HorizontalAlignment="Left" Height="26" Margin="95,41,0,0" VerticalAlignment="Top" Width="110" VerticalContentAlignment="Center" 
+                    Text="{Binding Server.ServerPort, UpdateSourceTrigger=PropertyChanged, FallbackValue=ServerPort}"/>
+                <Button Content="Start server" HorizontalAlignment="Center" Margin="10,83,115,0" VerticalAlignment="Top" Width="90" Height="26"
+                    Command="{Binding StartServerCommand}"/>
+                <Button Content="Stop server" HorizontalAlignment="Center" Margin="115,83,10,0" VerticalAlignment="Top" Width="90" Height="26"
+                    Command="{Binding StopServerCommand}"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Height="121" Margin="232,30,10,0" VerticalAlignment="Top">
+            <Grid>
+                <Label Content="Connected clients" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.638,0.91" Margin="9,9,0,0"/>
+                <ListBox HorizontalAlignment="Stretch" Height="74" Margin="10,35,10,0" VerticalAlignment="Top"
+                         ItemsSource="{Binding Server.ClientList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ConnectedClientString}"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch"  Margin="10,156,10,10" VerticalAlignment="Stretch">
+            <Grid>
+                <lib:ScrollingListBox HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Server.ServerLogger.LogEntries}">
+
+                    <!-- <ListBox.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Copy" Executed="CtrlCCopyCmdExecuted" />
+                    </ListBox.CommandBindings> -->
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding FormatedMessage}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </lib:ScrollingListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

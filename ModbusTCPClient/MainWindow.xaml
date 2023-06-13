@@ -1,0 +1,64 @@
+﻿<Window x:Class="ModbusTCPClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModbusTCPClient"
+        mc:Ignorable="d"
+        Title="Modbus TCP Client" Height="768" MinHeight="768" Width="1024" MinWidth="1024"
+        Style="{StaticResource AppWindowStyle}" Closing="Window_Closing">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="30" Margin="5,-31,0,0" VerticalAlignment="Top" Width="30" Source="Images/Icon.ico"/>
+
+        <Menu Height="25" VerticalAlignment="Top" Background="#4D4D4D" Foreground="White">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="Program info" HorizontalAlignment="Right" Click="MenuItemInfo_Click">
+            </MenuItem>
+        </Menu>
+
+        <Grid Margin="0,25,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" MinWidth="150" MaxWidth="350"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GridSplitter VerticalAlignment="Stretch" HorizontalAlignment="Center" Grid.Column="1" Grid.RowSpan="3" Width="5" Background="Gray"/>
+
+            <Label Content="Server list" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <ListBox HorizontalAlignment="Stretch" Margin="10,36,10,47" VerticalAlignment="Stretch"
+                    ItemsSource="{Binding Source={x:Static local:ModbusServer.ServerList}}"
+                    SelectedItem="{Binding SelectedServer}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding ServerName}" />
+                            <TextBlock Text="{Binding ServerIP}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button ToolTip="Add new server" HorizontalAlignment="Right" Height="32" Margin="0,0,47,10" VerticalAlignment="Bottom" Width="32" Command="{Binding AddNewServerCommand}">
+                <StackPanel Margin="0,0,0,0">
+                    <Image Source="Images\AddImage.png" Stretch="Fill"/>
+                </StackPanel>
+            </Button>
+
+            <Button ToolTip="Delete selected server" HorizontalAlignment="Right" Height="32" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="32" Command="{Binding DeleteServerCommand}" CommandParameter="{Binding SelectedServer}">
+                <StackPanel Margin="0,0,0,0">
+                    <Image Source="Images\DeleteImage.png" Stretch="Fill"/>
+                </StackPanel>
+            </Button>
+
+            <Grid Visibility="{Binding ServerPanelVisibility}" Grid.Column="2">
+                <local:ModbusServerView DataContext="{Binding SelectedServerView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>
